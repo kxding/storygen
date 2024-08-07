@@ -1,0 +1,43 @@
+unet_additional_kwargs:
+  use_motion_module: true
+  motion_module_resolutions:
+  - 1
+  - 2
+  - 4
+  - 8
+  motion_module_mid_block: false
+  motion_module_type: Vanilla
+  motion_module_kwargs:
+    num_attention_heads: 8
+    num_transformer_block: 1
+    attention_block_types:
+    - Temporal_Self
+    - Temporal_Self
+    temporal_position_encoding: true
+    temporal_position_encoding_max_len: 32
+    temporal_attention_dim_div: 1
+noise_scheduler_kwargs:
+  num_train_timesteps: 1000
+  beta_start: 0.00085
+  beta_end: 0.02
+  beta_schedule: scaled_linear
+general_prompt:
+- a man with a black suit
+negative_prompt:
+- naked, deformed, bad anatomy, disfigured, poorly drawn face, mutation, extra limb,
+  ugly, disgusting, poorly drawn hands, missing limb, floating limbs, disconnected
+  limbs, blurry, watermarks, oversaturated, distorted hands, amputation
+prompt_array:
+- wake up in the bed
+- have breakfast
+- is on the road
+- go to the company
+- work in the company
+- running in the playground
+- reading book in the home
+single_model_length: 2
+height: 512
+width: 512
+seed:
+- 12700938960316277252
+- 7374224144056053193

@@ -210,7 +210,7 @@ class UNet3DConditionModel(ModelMixin, ConfigMixin, UNet2DConditionLoadersMixin)
         addition_embed_type_num_heads=64,
 
         # motion module
-        use_motion_module=False,
+        use_motion_module=True,
         motion_module_resolutions = (1,2,4,8),
         motion_module_mid_block = False,
         motion_module_decoder_only = False,
@@ -853,9 +853,10 @@ class UNet3DConditionModel(ModelMixin, ConfigMixin, UNet2DConditionLoadersMixin)
         default_overall_up_factor = 2**self.num_upsamplers
 
         # convert the time, size, and text embedding into (b f) c h w
-        video_length = sample.shape[2]
+        video_length = sample.shape[2] #sample.shape = [2, 4, 8, 64, 64 ] <--> [batch, id_length, video_length, height, width]
+        # __import__('ipdb').set_trace()
         timestep = repeat(timestep, "b-> (b f)", f=video_length)
-        encoder_hidden_states = repeat(encoder_hidden_states, "b c d-> (b f) c d", f=video_length)
+        encoder_hidden_states = repeat(encoder_hidden_states, "b c d-> (b f) c d", f=video_length) # encoder_hidden_states [2, 77, 2048] - > [16, 77, 2048]
         added_cond_kwargs['time_ids'] = repeat(added_cond_kwargs['time_ids'], "b c -> (b f) c", f=video_length)
         added_cond_kwargs['text_embeds'] = repeat(added_cond_kwargs['text_embeds'], "b c -> (b f) c", f=video_length)
 
@@ -1016,9 +1017,9 @@ class UNet3DConditionModel(ModelMixin, ConfigMixin, UNet2DConditionLoadersMixin)
             encoder_hidden_states = self.encoder_hid_proj(image_embeds)
         # 2. pre-process
         video_length = sample.shape[2]
-        sample = rearrange(sample, "b c f h w -> (b f) c h w")
-        sample = self.conv_in(sample)
-        sample = rearrange(sample, "(b f) c h w -> b c f h w", f=video_length)
+        sample = rearrange(sample, "b c f h w -> (b f) c h w") # sample.shape = [2, 4, 8, 64, 64] -> [16, 4, 64, 64]
+        sample = self.conv_in(sample) # sample.shape = [16, 4, 64, 64] -> [16, 320, 64, 64]
+        sample = rearrange(sample, "(b f) c h w -> b c f h w", f=video_length) # sample.shape = [16, 320, 64, 64] -> [2, 320, 8, 64, 64]
 
         # 2.5 GLIGEN position net
         if cross_attention_kwargs is not None and cross_attention_kwargs.get("gligen", None) is not None:

@@ -508,6 +508,7 @@ class AnimationPipeline(DiffusionPipeline, FromSingleFileMixin, LoraLoaderMixin)
     # Copied from diffusers.pipelines.stable_diffusion.pipeline_stable_diffusion.StableDiffusionPipeline.prepare_latents
     def prepare_latents(self, batch_size, single_model_length, num_channels_latents, height, width, dtype, device, generator, latents=None):
         shape = (batch_size, num_channels_latents, single_model_length, height // self.vae_scale_factor, width // self.vae_scale_factor)
+        # height // self.vae_scale_factor = 512 / 8 = 64
         if isinstance(generator, list) and len(generator) != batch_size:
             raise ValueError(
                 f"You have passed a list of generators of length {len(generator)}, but requested an effective batch"
@@ -515,7 +516,7 @@ class AnimationPipeline(DiffusionPipeline, FromSingleFileMixin, LoraLoaderMixin)
             )
 
         if latents is None:
-            latents = randn_tensor(shape, generator=generator, device=device, dtype=dtype)
+            latents = randn_tensor(shape, generator=generator, device=device, dtype=dtype) # shape = [1, 4, 4, 64, 64]
         else:
             latents = latents.to(device)
 
@@ -766,6 +767,7 @@ class AnimationPipeline(DiffusionPipeline, FromSingleFileMixin, LoraLoaderMixin)
 
         # 5. Prepare latent variables
         num_channels_latents = self.unet.config.in_channels
+        # __import__('ipdb').set_trace()
         latents = self.prepare_latents(
             batch_size * num_videos_per_prompt,
             single_model_length, 
@@ -831,7 +833,7 @@ class AnimationPipeline(DiffusionPipeline, FromSingleFileMixin, LoraLoaderMixin)
                     if os.environ.get("DEBUG_MODE") == "true":
                         __import__('ipdb').set_trace()
                 noise_pred = self.unet(
-                    latent_model_input,
+                    latent_model_input, # [2, 4, 4, 64, 64]
                     ts,
                     encoder_hidden_states=prompt_embeds,
                     cross_attention_kwargs=cross_attention_kwargs,

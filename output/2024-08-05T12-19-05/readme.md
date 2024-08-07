@@ -1,0 +1,1 @@
+withou CSA, only animatediff --> 512 * 512 * 4

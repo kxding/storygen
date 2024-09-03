@@ -1,0 +1,24 @@
+motion_module_path: "../AnimateDiff/models/Motion_Module/mm_sd_v15.ckpt"
+
+seed:           -1
+
+guidance_scale: 8.5
+steps: 100
+
+prompt:
+  - "A panda standing on a surfboard in the ocean in sunset, 4k, high resolution.Realistic, Cinematic, high resolution"
+  - "A disoriented astronaut, lost in a galaxy of swirling colors, floating in zero gravity, grasping at memories, poignant loneliness, stunning realism, cosmic chaos, emotional depth, 12K, hyperrealism, unforgettable, mixed media, celestial, dark, introspective"
+
+n_prompt:
+  - ""
+  - ""
+
+
+  # ToonYou:
+  # base:           ""
+  # path:           ""
+  # motion_module:  "models/Motion_Module/mm_sd_v14.ckpt"
+
+  # seed:           [10788741199826055526, 6520604954829636163, 6519455744612555650, 16372571278361863751]
+  # steps:          25
+  # guidance_scale: 7.5

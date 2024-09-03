@@ -1,0 +1,76 @@
+unet_additional_kwargs:
+  unet_use_cross_frame_attention: false
+  unet_use_temporal_attention: true  # Set to true to enable temporal attention
+  use_motion_module: true
+  motion_module_resolutions:
+  - 1
+  - 2
+  - 4
+  - 8
+  motion_module_mid_block: false
+  motion_module_decoder_only: false
+  motion_module_type: Vanilla
+  motion_module_kwargs:
+    num_attention_heads: 8
+    num_transformer_block: 1
+    attention_block_types:
+    - Temporal_Self
+    - Temporal_Self
+    temporal_position_encoding: true
+    temporal_position_encoding_max_len: 24
+    temporal_attention_dim_div: 1
+
+noise_scheduler_kwargs:
+  num_train_timesteps: 1000
+  beta_start: 0.00085
+  beta_end: 0.012
+  beta_schedule: "linear"
+  steps_offset: 1
+  clip_sample: false
+
+general_prompt:
+  # - a woman with a red dress
+  # - a dog with a blue collar
+  # - a cat with a green bow
+  # - a truck with a yellow paint job
+  # - a boy with a purple backpack
+  # - an elephant with a brown blanket
+  # - a car with a white roof
+  # - a girl with a pink hat
+  # - a horse with a black saddle
+  # - a bird with an orange beak
+  # - teacher with a red pen
+  # - An astronaut with a white helmet
+  # - A chef with a blue apron
+  # - A firefighter with a yellow coat
+  # - A doctor with a green stethoscope
+  - A policeman with a black uniform
+  # - An artist with a purple beret
+  # - A mechanic with a gray jumpsuit
+  # - A gardener with a brown hat
+  - A pilot with a gold badge
+
+negative_prompt:
+  - "naked, deformed, bad anatomy, disfigured, poorly drawn face, mutation, extra limb, ugly, disgusting, poorly drawn hands, missing limb, floating limbs, disconnected limbs, blurry, watermarks, oversaturated, distorted hands, amputation"
+
+prompt_array:
+  [
+  "is on the road", 
+  # "go to the company",
+  # "work in the company",
+  # "running in the playground",
+  # "reading book in the home",
+  # "wake up in the bed",
+  #   "have breakfast",
+  ]
+
+
+single_model_length: 16
+height: 256
+width: 256
+steps: 8
+
+motion_module_path: "../AnimateDiff/models/Motion_Module/mm_sd_v15.ckpt"
+with_csa: true
+# with_csa: false
+guidance_scale: 8.5

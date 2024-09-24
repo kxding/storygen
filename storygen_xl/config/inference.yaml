@@ -1,0 +1,81 @@
+unet_additional_kwargs:
+  use_motion_module: true
+  motion_module_resolutions:
+  - 1
+  - 2
+  - 4
+  - 8
+  motion_module_mid_block: false
+  motion_module_type: Vanilla
+  motion_module_kwargs:
+    num_attention_heads: 8
+    num_transformer_block: 1
+    attention_block_types:
+    - Temporal_Self
+    - Temporal_Self
+    temporal_position_encoding: true
+    temporal_position_encoding_max_len: 32
+    temporal_attention_dim_div: 1
+
+
+noise_scheduler_kwargs:
+  num_train_timesteps: 1000
+  beta_start:          0.00085
+  beta_end:            0.020
+  beta_schedule:       "scaled_linear" 
+
+general_prompt:
+  # - a girl with blond hair and blue eyes
+  # - a woman with a red dress
+  # - a cow cat 
+  # - a cat with blue eyes
+  # - a truck with a yellow paint job
+  # - a boy with a purple backpack
+  # - an elephant with a brown blanket
+  # - a car with a white roof
+  # - a girl with a pink hat
+  # - a horse with a black saddle
+  # - a bird with an orange beak
+  # - teacher with a red pen
+  # - An astronaut with a white helmet
+  # - A chef with a blue apron
+  # - A firefighter with a yellow coat
+  # - A doctor with a green stethoscope
+  # - A policeman with a black uniform
+  # - An artist with a purple beret
+  # - A mechanic with a gray jumpsuit
+  # - A gardener with a brown hat
+  - A pilot with a gold badge
+# a woman wearing short blue shirt and blue short skirt is spinning around with her black yellow purse
+# a woman wearing short blue shirt and blue short skirt  is showing up her black yellow purse
+
+
+negative_prompt:
+  - "naked, deformed, bad anatomy, disfigured, poorly drawn face, mutation, extra limb, ugly, disgusting, poorly drawn hands, missing limb, floating limbs, disconnected limbs, blurry, watermarks, oversaturated, distorted hands, amputation"
+
+prompt_array:
+  [
+  # “walking in the park”,
+  # “playing with a ball of yarn”,
+  # “running through the grass, its tail held high in excitement“,
+  # “pouncing on a fallen leaf”,
+  # "is on the road", 
+  # "go to the company",
+  "working in the company",
+  # "running in the playground",
+  "reading book in the home",
+  # "wake up in the bed",
+    "having breakfast",
+  ]
+
+
+single_model_length: 16
+height: 768
+width: 1024
+steps: 25
+
+motion_module_path: "./models/Motion_Module/mm_sdxl_v10_beta.ckpt"
+dreambooth_path: "./models/DreamBooth_LoRA/dynavisionXLAllInOneStylized_release0534bakedvae.safetensors"
+seed:           -1
+
+guidance_scale: 8.5
